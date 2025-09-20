@@ -1,4 +1,4 @@
-﻿import { randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 import {
   Alert,
   Applicant,
@@ -23,16 +23,28 @@ const applicants: Applicant[] = [
     region: "US-East",
     status: "in_progress",
     submittedAt: "2025-09-17T13:45:00Z",
-    verifiedAt: undefined
+    verifiedAt: undefined,
+    searchId: "73024600",
+    requestor: "api_SMKYBER3",
+    packageName: "PKG_ADJ_CRIM",
+    orderDate: "2025-09-09",
+    progressPercent: 55,
+    etaLabel: "ETA 09/22"
   },
   {
     id: "APP-1020",
-    name: "Luis Martínez",
+    name: "Luis MartÃƒÆ’Ã‚Â­nez",
     role: "Compliance Specialist",
     region: "US-West",
     status: "verified",
     submittedAt: "2025-09-12T09:12:00Z",
-    verifiedAt: "2025-09-18T14:10:00Z"
+    verifiedAt: "2025-09-18T14:10:00Z",
+    searchId: "73024484",
+    requestor: "api_SMKYBER3",
+    packageName: "PKG_ADJ_CRIM",
+    orderDate: "2025-09-09",
+    progressPercent: 100,
+    etaLabel: "Completed"
   },
   {
     id: "APP-1019",
@@ -41,7 +53,13 @@ const applicants: Applicant[] = [
     region: "India-North",
     status: "flagged",
     submittedAt: "2025-09-11T16:22:00Z",
-    verifiedAt: undefined
+    verifiedAt: undefined,
+    searchId: "73024169",
+    requestor: "api_SMKYBER3",
+    packageName: "Package B Non DOT",
+    orderDate: "2025-09-09",
+    progressPercent: 35,
+    etaLabel: "Info needed"
   },
   {
     id: "APP-1018",
@@ -50,7 +68,13 @@ const applicants: Applicant[] = [
     region: "US-South",
     status: "new",
     submittedAt: "2025-09-19T08:15:00Z",
-    verifiedAt: undefined
+    verifiedAt: undefined,
+    searchId: "73024164",
+    requestor: "Automation Portal",
+    packageName: "Smokey Bear 3.0",
+    orderDate: "2025-09-09",
+    progressPercent: 12,
+    etaLabel: "ETA unavailable"
   },
   {
     id: "APP-1017",
@@ -59,7 +83,13 @@ const applicants: Applicant[] = [
     region: "APAC",
     status: "verified",
     submittedAt: "2025-09-08T10:05:00Z",
-    verifiedAt: "2025-09-15T17:32:00Z"
+    verifiedAt: "2025-09-15T17:32:00Z",
+    searchId: "73023966",
+    requestor: "Automation Portal",
+    packageName: "Package B Non DOT",
+    orderDate: "2025-09-09",
+    progressPercent: 100,
+    etaLabel: "Completed"
   }
 ];
 
@@ -366,7 +396,19 @@ export async function addApplicant(payload: {
     role: payload.role,
     region: payload.region,
     status: payload.status ?? "new",
-    submittedAt: new Date().toISOString()
+    submittedAt: new Date().toISOString(),
+    verifiedAt: undefined,
+    searchId: (Math.floor(Math.random() * 90000000) + 10000000).toString(),
+    requestor: "api_SMKYBER3",
+    packageName: payload.role ? `${payload.role} package` : "Background package",
+    orderDate: new Date().toISOString().slice(0, 10),
+    progressPercent: payload.status === "verified" ? 100 : payload.status === "in_progress" ? 55 : payload.status === "flagged" ? 35 : 20,
+    etaLabel:
+      payload.status === "verified"
+        ? "Completed"
+        : payload.status === "flagged"
+        ? "Action needed"
+        : "ETA unavailable"
   };
 
   applicants.unshift(newApplicant);

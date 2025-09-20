@@ -8,6 +8,12 @@ export interface Applicant {
   status: ApplicantStatus;
   submittedAt: string;
   verifiedAt?: string;
+  searchId: string;
+  requestor: string;
+  packageName: string;
+  orderDate: string;
+  progressPercent?: number;
+  etaLabel?: string;
 }
 
 export interface VerificationDay {
